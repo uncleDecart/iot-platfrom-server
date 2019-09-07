@@ -4,10 +4,12 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_cors import CORS
 from flask_heroku import Heroku
+from flask import jsonify
 
 import datetime
 import sys
 import json
+import ast
 
 app = Flask( __name__ )
 CORS(app)
@@ -45,10 +47,10 @@ def update():
 @app.route('/device_info')
 def get_dev_info():
     sel_id = request.args.get('dev_id')
-    res = ""
+    res = []
     for i in DeviceLogEntry.query.filter_by(d_id=sel_id).all():
-        res += "d_id: {0} log : {1} date : {2}".format(i.d_id, i.log, i.date) + '\r\n'
-    return res 
+        res.append({"d_id" : i.d_id, "log" :  ast.literal_eval(i.log), "date" : i.date})
+    return (jsonify(res), 200)
 
 @app.route('/info')
 def get_info():
