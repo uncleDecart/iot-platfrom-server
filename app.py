@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
@@ -6,17 +6,15 @@ from flask_cors import CORS
 from flask_heroku import Heroku
 
 import datetime
+import sys
+import json
 
-app = Flask(__name__)
+app = Flask( __name__ )
 CORS(app)
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql://iot_admin:mypass@localhost:5432/dev_info'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 heroku = Heroku(app)
-
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-manager = Manager(app)
-manager.add_command('db', MigrateCommand)
+
 
 class DeviceLogEntry(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -58,4 +56,4 @@ def get_info():
     return render_template('view_logs.html', logs=logs)
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()

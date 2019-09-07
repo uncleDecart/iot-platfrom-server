@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logs</title>
+</head>
+<body>
+    <h1>Logs</h1>
+    {% for i in logs %}
+    <h1>Device id : {{ i.d_id}}</h1>
+		<p>Date : {{ i.date}}</p>
+    <p>Log entry: {{ i.log}}</p>
+    <hr>
+    {% endfor %}
+</body>
+</html>
